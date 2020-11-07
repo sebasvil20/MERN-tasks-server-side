@@ -30,7 +30,6 @@ exports.crearTarea = async (req, res) => {
     await tarea.save();
     res.json({ tarea });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Ocurrio un error");
   }
 };
@@ -38,7 +37,7 @@ exports.crearTarea = async (req, res) => {
 //Obtiene las tareas por proyecto
 exports.obtenerTareas = async (req, res) => {
   try {
-    const { proyecto } = req.body;
+    const { proyecto } = req.query;
     const existeProyecto = await Proyecto.findById(proyecto);
     if (!existeProyecto) {
       return res.status(404).json({ msg: "Proyecto no encontrado" });
@@ -54,7 +53,6 @@ exports.obtenerTareas = async (req, res) => {
     const tareas = await Tarea.find({ proyecto });
     res.json({ tareas });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Ocurrio un error");
   }
 };
@@ -80,8 +78,8 @@ exports.actualizarTarea = async (req, res) => {
     //Crear un objeto con la nueva informacion
     const nuevaTarea = {};
 
-    if (nombre) nuevaTarea.nombre = nombre;
-    if (estado) nuevaTarea.estado = estado;
+    nuevaTarea.nombre = nombre;
+    nuevaTarea.estado = estado;
 
     //Guardar la tarea
     tarea = await Tarea.findByIdAndUpdate({ _id: req.params.id }, nuevaTarea, {
@@ -90,14 +88,13 @@ exports.actualizarTarea = async (req, res) => {
 
     res.json({ tarea });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Ocurrio un error");
   }
 };
 
 exports.eliminarTarea = async (req, res) => {
   try {
-    const { proyecto } = req.body;
+    const { proyecto } = req.query;
 
     //Revisar si la tarea existe
     let tarea = await Tarea.findById(req.params.id);
@@ -117,7 +114,6 @@ exports.eliminarTarea = async (req, res) => {
     await Tarea.findOneAndRemove({ _id: req.params.id });
     res.json({ msg: "Tarea eliminada" });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Ocurrio un error");
   }
 };

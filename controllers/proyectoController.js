@@ -32,7 +32,6 @@ exports.obtenerProyectos = async (req, res) => {
     });
     res.json({ proyectos });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Ocurrio un error");
   }
 };
@@ -76,7 +75,6 @@ exports.actualizarProyecto = async (req, res) => {
 
     res.json({ proyecto });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Error en el servidor");
   }
 };
@@ -102,7 +100,6 @@ exports.eliminarProyecto = async (req, res) => {
     await Proyecto.findOneAndRemove({ _id: req.params.id });
     res.json({ msg: "Proyecto eliminado" });
   } catch (error) {
-    console.log(error);
     res.status(500).send("Error en el servidor");
   }
 };
